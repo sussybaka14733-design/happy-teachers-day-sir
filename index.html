@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#081d24" />
+  <title>For Arpan Tewary — Teachers' Day</title>
+  <style>
+    :root {
+      --ink:#e9f0e8; --deep:#081d24; --night:#0b2930; --teal:#17484b; --mint:#9cdcc5; --gold:#f5c967; --coral:#ed8068; --muted:#9fb7b0;
+      --serif:"Iowan Old Style",Baskerville,"Times New Roman",serif; --sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+    }
+    * { box-sizing:border-box; }
+    html,body { width:100%; min-width:320px; height:100%; margin:0; overflow:hidden; }
+    body { background:var(--deep); color:var(--ink); font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+    button { font:inherit; cursor:pointer; } button:focus-visible { outline:2px solid var(--gold); outline-offset:4px; }
+    .app { position:relative; width:100%; height:100%; overflow:hidden; isolation:isolate; }
+    .grain { position:fixed; z-index:30; inset:0; pointer-events:none; opacity:.10; mix-blend-mode:soft-light; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.44'/%3E%3C/svg%3E"); }
+    .page { position:absolute; inset:0; overflow:hidden; visibility:hidden; opacity:0; pointer-events:none; transform:translate3d(38px,0,0); transition:opacity .55s ease,transform .75s cubic-bezier(.16,1,.3,1),visibility 0s linear .75s; }
+    .page.active { visibility:visible; opacity:1; pointer-events:auto; transform:translate3d(0,0,0); transition-delay:0s; }
+    .brand,.top-note,.page-count { position:absolute; z-index:5; top:clamp(22px,4vw,48px); text-transform:uppercase; font-size:10px; font-weight:800; letter-spacing:.16em; }
+    .brand { left:clamp(24px,5vw,68px); display:flex; align-items:center; gap:11px; color:var(--muted); }
+    .brand-mark { position:relative; width:19px; height:19px; border:1px solid var(--mint); border-radius:5px; transform:rotate(45deg); }
+    .brand-mark::after { content:""; position:absolute; inset:5px; border-radius:1px; background:var(--mint); }
+    .top-note,.page-count { right:clamp(24px,5vw,68px); color:var(--muted); } .page-count { color:#55746f; }
+    .back { position:absolute; z-index:6; bottom:clamp(22px,4vw,47px); left:clamp(24px,5vw,68px); padding:0; border:0; background:none; color:inherit; text-transform:uppercase; font-size:10px; font-weight:800; letter-spacing:.16em; opacity:.72; transition:opacity .2s; }
+    .back:hover { opacity:1; } .back::before { content:"←"; padding-right:9px; font-size:14px; vertical-align:-1px; }
+    .eyebrow { margin:0 0 23px; color:var(--mint); text-transform:uppercase; font-size:10px; font-weight:800; letter-spacing:.21em; }
+
+    /* 01 — Boot screen */
+    .boot { display:grid; place-items:center; padding:clamp(24px,5vw,68px); text-align:center; background:radial-gradient(circle at 82% 20%,rgba(237,128,104,.15),transparent 28rem),radial-gradient(circle at 15% 90%,rgba(156,220,197,.15),transparent 30rem),var(--deep); }
+    .boot::before,.boot::after { content:""; position:absolute; border:1px solid rgba(156,220,197,.14); border-radius:50%; pointer-events:none; }
+    .boot::before { width:min(84vw,1000px); aspect-ratio:1; transform:translate(31vw,-34vh); } .boot::after { width:min(52vw,690px); aspect-ratio:1; transform:translate(-37vw,42vh); }
+    .boot-content { position:relative; z-index:1; width:min(100%,950px); }
+    .code-line { display:inline-flex; gap:10px; padding:9px 13px; border:1px solid rgba(156,220,197,.22); color:var(--muted); background:rgba(23,72,75,.22); font-family:var(--mono); font-size:11px; line-height:1.4; text-align:left; }
+    .code-line b { color:var(--gold); font-weight:400; } .code-line i { color:var(--mint); font-style:normal; }
+    .boot h1 { max-width:830px; margin:27px auto 0; font-family:var(--serif); font-size:clamp(47px,7.8vw,115px); font-weight:400; line-height:.89; letter-spacing:-.067em; }
+    .boot h1 em { color:var(--gold); padding-right:.12em; font-style:italic; }
+    .boot-copy { max-width:440px; margin:30px auto 0; color:var(--muted); font-size:14px; line-height:1.7; }
+    .launch { position:relative; display:inline-grid; place-items:center; width:136px; height:136px; margin-top:clamp(30px,5vh,56px); overflow:hidden; border:1px solid rgba(233,240,232,.3); border-radius:50%; color:var(--ink); background:rgba(23,72,75,.35); transition:transform .3s,border-color .3s,color .3s; }
+    .launch::before { content:""; position:absolute; inset:7px; border:1px solid var(--mint); border-radius:50%; transition:transform .55s cubic-bezier(.16,1,.3,1); }
+    .launch::after { content:""; position:absolute; width:200%; height:200%; left:-50%; top:107%; border-radius:42%; background:var(--mint); transition:transform .6s cubic-bezier(.16,1,.3,1); }
+    .launch:hover { color:var(--deep); border-color:var(--mint); transform:scale(1.05); } .launch:hover::before { transform:rotate(90deg) scale(.91); } .launch:hover::after { transform:translateY(-54%) rotate(12deg); }
+    .launch span { position:relative; z-index:1; width:73px; text-transform:uppercase; font-size:10px; font-weight:900; line-height:1.45; letter-spacing:.14em; }
+    .instruction { margin:17px 0 0; color:rgba(233,240,232,.45); text-transform:uppercase; font-size:9px; font-weight:800; letter-spacing:.16em; }
+    .float { position:absolute; z-index:0; color:rgba(156,220,197,.27); font-family:var(--mono); font-size:12px; animation:drift 8s ease-in-out infinite alternate; } .float-a { top:31%; left:10%; } .float-b { right:10%; bottom:27%; color:rgba(245,201,103,.48); animation-delay:-4s; }
+    @keyframes drift { to { transform:translate(14px,-15px); } }
+
+    /* 02 — Greeting */
+    .tribute { display:grid; grid-template-columns:.88fr 1.12fr; color:var(--deep); background:#e8e7d8; }
+    .system-map { position:relative; overflow:hidden; background:var(--teal); }
+    .system-map::before,.system-map::after { content:""; position:absolute; border:1px solid rgba(233,240,232,.2); border-radius:50%; } .system-map::before { width:126%; aspect-ratio:1; top:-20%; left:-55%; } .system-map::after { width:74%; aspect-ratio:1; right:-28%; bottom:-13%; }
+    .network { position:absolute; top:50%; left:50%; width:min(54vmin,510px); aspect-ratio:1; transform:translate(-50%,-50%); }
+    .network svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; } .network line { stroke:rgba(156,220,197,.6); stroke-width:1; } .network circle { fill:var(--gold); } .network circle:nth-child(2n) { fill:var(--coral); }
+    .node { position:absolute; display:grid; place-items:center; width:72px; aspect-ratio:1; border:1px solid rgba(233,240,232,.58); border-radius:50%; color:var(--ink); background:rgba(8,29,36,.35); font-family:var(--mono); font-size:9px; letter-spacing:.06em; animation:pulse 4s ease-in-out infinite alternate; }
+    .node-one { top:5%; left:42%; } .node-two { top:36%; left:3%; animation-delay:-1s; } .node-three { top:62%; right:3%; animation-delay:-2s; } .node-four { bottom:2%; left:38%; animation-delay:-3s; } .node-core { top:37%; left:37%; width:103px; border-color:var(--gold); color:var(--gold); font-size:10px; animation:none; }
+    @keyframes pulse { to { box-shadow:0 0 0 13px rgba(156,220,197,0); transform:scale(1.05); } }
+    .map-caption { position:absolute; left:clamp(27px,5vw,68px); bottom:clamp(35px,6vw,74px); max-width:180px; color:rgba(233,240,232,.72); font-size:12px; line-height:1.55; }
+    .tribute-copy { display:flex; flex-direction:column; justify-content:center; padding:clamp(80px,11vw,158px); }
+    .tribute-copy .eyebrow { color:#638278; } .tribute-copy h2 { max-width:720px; margin:0; font-family:var(--serif); font-size:clamp(48px,6.2vw,94px); font-weight:400; line-height:.9; letter-spacing:-.067em; }
+    .tribute-copy h2 em { color:#bf5941; font-style:italic; } .tribute-copy p:not(.eyebrow) { max-width:520px; margin:clamp(27px,4vh,47px) 0 0; color:#375149; font-family:var(--serif); font-size:clamp(18px,1.75vw,24px); line-height:1.5; }
+    .next { display:inline-flex; align-items:center; gap:13px; width:fit-content; margin-top:31px; padding:0; border:0; background:none; color:var(--deep); text-transform:uppercase; font-size:10px; font-weight:900; letter-spacing:.16em; }
+    .next::after { content:"→"; display:grid; place-items:center; width:32px; height:32px; border:1px solid #708a80; border-radius:50%; font-size:16px; transition:transform .2s,background .2s,color .2s; } .next:hover::after { color:#e8e7d8; background:var(--coral); border-color:var(--coral); transform:translateX(5px); }
+
+    /* 03 — Interactive impact map */
+    .impact { display:grid; grid-template-columns:minmax(250px,.72fr) 1.28fr; color:var(--ink); background:radial-gradient(circle at 82% 78%,rgba(237,128,104,.16),transparent 28rem),var(--deep); }
+    .impact-side { position:relative; padding:clamp(80px,9vw,142px) clamp(24px,5vw,68px); overflow:hidden; border-right:1px solid rgba(156,220,197,.17); background:rgba(19,72,75,.22); }
+    .impact-side::before { content:""; position:absolute; width:95%; aspect-ratio:1; left:-47%; bottom:-18%; border:1px solid rgba(156,220,197,.18); border-radius:50%; }
+    .impact-side h2 { position:relative; z-index:1; margin:0; font-family:var(--serif); font-size:clamp(43px,4.7vw,72px); font-weight:400; line-height:.91; letter-spacing:-.06em; } .impact-side h2 em { color:var(--gold); font-style:italic; }
+    .impact-side p { position:relative; z-index:1; max-width:260px; margin:26px 0 0; color:var(--muted); font-size:13px; line-height:1.65; }
+    .signals { position:relative; z-index:1; display:grid; gap:9px; margin-top:clamp(32px,5vh,58px); }
+    .signal { display:grid; grid-template-columns:30px 1fr 20px; align-items:center; width:100%; min-height:58px; padding:0 16px; border:1px solid rgba(156,220,197,.23); border-radius:0; color:var(--ink); background:rgba(8,29,36,.23); text-align:left; text-transform:uppercase; font-size:10px; font-weight:850; letter-spacing:.14em; transition:border-color .2s,background .2s,transform .2s; }
+    .signal::before { content:""; display:block; width:9px; height:9px; border:1px solid var(--mint); border-radius:50%; } .signal::after { content:"↗"; color:var(--mint); font-size:15px; }
+    .signal:hover,.signal[aria-pressed="true"] { border-color:var(--mint); background:rgba(156,220,197,.13); transform:translateX(5px); } .signal[aria-pressed="true"]::before { background:var(--mint); box-shadow:0 0 0 5px rgba(156,220,197,.1); }
+    .impact-detail { position:relative; display:flex; flex-direction:column; justify-content:center; padding:clamp(80px,11vw,155px); }
+    .detail-kicker { color:var(--mint); font-family:var(--mono); font-size:11px; letter-spacing:.08em; } .detail-kicker::before { content:"// "; color:var(--gold); }
+    .impact-detail h3 { max-width:710px; margin:22px 0 0; font-family:var(--serif); font-size:clamp(48px,6vw,91px); font-weight:400; line-height:.9; letter-spacing:-.066em; } .impact-detail h3 em { color:var(--gold); font-style:italic; }
+    .detail-copy { max-width:585px; margin:clamp(27px,4vh,45px) 0 0; color:var(--muted); font-family:var(--serif); font-size:clamp(18px,1.7vw,23px); line-height:1.52; }
+    .meters { display:flex; gap:13px; margin-top:38px; } .meter { width:clamp(64px,8vw,105px); height:5px; overflow:hidden; background:rgba(156,220,197,.18); } .meter i { display:block; height:100%; background:var(--gold); transition:width .5s cubic-bezier(.16,1,.3,1); }
+    .detail-footer { position:absolute; right:clamp(24px,5vw,68px); bottom:clamp(22px,4vw,47px); color:rgba(233,240,232,.44); text-transform:uppercase; font-size:9px; font-weight:800; letter-spacing:.15em; }
+
+    @media (max-width:760px) {
+      .brand { left:24px; } .brand span:last-child,.top-note { display:none; } .page-count { right:24px; font-size:9px; } .back { left:24px; bottom:24px; font-size:9px; }
+      .boot h1 { font-size:clamp(45px,13.5vw,72px); } .boot-copy { margin-top:23px; font-size:13px; } .launch { width:122px; height:122px; margin-top:33px; } .float-a { top:20%; left:7%; } .float-b { right:7%; bottom:20%; }
+      .tribute { grid-template-columns:1fr; grid-template-rows:34% 66%; } .system-map { min-height:0; } .network { width:57vmin; min-width:236px; } .node { width:52px; font-size:7px; } .node-core { width:75px; font-size:8px; } .map-caption { display:none; }
+      .tribute-copy { padding:74px 30px 51px; } .tribute-copy h2 { font-size:clamp(45px,12.7vw,65px); } .tribute-copy p:not(.eyebrow) { margin-top:22px; font-size:17px; }
+      .impact { grid-template-columns:1fr; grid-template-rows:49% 51%; } .impact-side { padding:72px 30px 35px; border-right:0; border-bottom:1px solid rgba(156,220,197,.17); } .impact-side h2 { font-size:clamp(42px,12vw,61px); } .impact-side p { display:none; } .signals { grid-template-columns:repeat(3,1fr); gap:7px; margin-top:27px; } .signal { grid-template-columns:1fr; min-height:64px; padding:8px; text-align:center; font-size:8px; letter-spacing:.08em; } .signal::before,.signal::after { display:none; }
+      .impact-detail { padding:32px 30px 51px; } .impact-detail h3 { margin-top:14px; font-size:clamp(39px,11.5vw,57px); } .detail-copy { margin-top:17px; font-size:16px; } .meters { margin-top:25px; } .detail-footer { display:none; }
+    }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="app"><div class="grain"></div>
+    <section class="page boot active" data-page="0" aria-labelledby="boot-title">
+      <div class="brand"><span class="brand-mark"></span><span>Teachers' Day / 2026</span></div><span class="top-note">A personal system note</span>
+      <span class="float float-a">{ curiosity: true }</span><span class="float float-b">impact++</span>
+      <div class="boot-content"><p class="eyebrow">For Mr. Arpan Tewary / Computer Science</p><div class="code-line"><b>const</b> <i>teacherImpact</i> = <span>∞;</span></div><h1 id="boot-title">For the teacher who made <em>logic</em> feel like possibility.</h1><p class="boot-copy">A small interactive tribute for the mentor who taught us not only how systems work—but how to think with clarity, curiosity, and confidence.</p><button class="launch" type="button" data-go="1"><span>Run the tribute</span></button><p class="instruction">Click to begin</p></div>
+    </section>
+
+    <section class="page tribute" data-page="1" aria-labelledby="tribute-title" aria-hidden="true">
+      <aside class="system-map" aria-label="Abstract map of connected ideas"><div class="network" aria-hidden="true"><svg viewBox="0 0 100 100"><line x1="50" y1="15" x2="48" y2="50"/><line x1="12" y1="45" x2="48" y2="50"/><line x1="48" y1="50" x2="85" y2="70"/><line x1="48" y1="50" x2="47" y2="93"/><line x1="12" y1="45" x2="47" y2="93"/><line x1="50" y1="15" x2="85" y2="70"/></svg><span class="node node-one">IDEAS</span><span class="node node-two">QUESTIONS</span><span class="node node-three">SOLUTIONS</span><span class="node node-four">GROWTH</span><span class="node node-core">IMPACT</span></div><p class="map-caption">The best teachers leave a pattern of thinking that keeps connecting long after class is over.</p></aside>
+      <article class="tribute-copy"><span class="page-count">01 / 02</span><p class="eyebrow">For a remarkable Computer Science teacher</p><h2 id="tribute-title">Happy Teachers’ Day,<br /><em>Arpan</em> Tewary.</h2><p>Thank you for making difficult problems feel approachable, for showing us the elegance behind every solution, and for turning a subject into a way of seeing the world more clearly.</p><button class="next" type="button" data-go="2">Explore the impact</button></article><button class="back" type="button" data-go="0">Back</button>
+    </section>
+
+    <section class="page impact" data-page="2" aria-labelledby="impact-title" aria-hidden="true">
+      <aside class="impact-side"><p class="eyebrow">The lessons that remain</p><h2 id="impact-title">Your impact,<br /><em>compiled.</em></h2><p>Choose a signal to uncover one of the qualities that makes your teaching unforgettable.</p><div class="signals" role="group" aria-label="Impact themes"><button class="signal" type="button" data-signal="clarity" aria-pressed="true">Clarity</button><button class="signal" type="button" data-signal="curiosity" aria-pressed="false">Curiosity</button><button class="signal" type="button" data-signal="confidence" aria-pressed="false">Confidence</button></div></aside>
+      <article class="impact-detail"><span class="page-count">02 / 02</span><p class="detail-kicker" id="detail-kicker">core principle</p><h3 id="detail-title">You made hard things<br />feel <em>possible.</em></h3><p class="detail-copy" id="detail-copy">With calm explanations and a sharp way of simplifying complexity, you gave us more than answers—you gave us a method for finding them.</p><div class="meters" aria-hidden="true"><span class="meter"><i id="meter-one" style="width:87%"></i></span><span class="meter"><i id="meter-two" style="width:69%"></i></span><span class="meter"><i id="meter-three" style="width:94%"></i></span></div><span class="detail-footer">Arpan Tewary / with lasting gratitude</span></article><button class="back" type="button" data-go="1">Back</button>
+    </section>
+  </main>
+  <script>
+    const pages = [...document.querySelectorAll('.page')];
+    const signalData = {
+      clarity: { kicker: 'core principle', title: 'You made hard things<br />feel <em>possible.</em>', copy: 'With calm explanations and a sharp way of simplifying complexity, you gave us more than answers—you gave us a method for finding them.', meters: ['87%','69%','94%'] },
+      curiosity: { kicker: 'open question', title: 'You taught us to<br />keep <em>asking why.</em>', copy: 'You made every question feel worth pursuing. That habit of curiosity will outlast every language, framework, and classroom we move through.', meters: ['76%','96%','82%'] },
+      confidence: { kicker: 'final output', title: 'You helped us trust<br />our own <em>solutions.</em>', copy: 'By believing in our ability to work through a problem, you made us more confident thinkers—ready to try, revise, and build again.', meters: ['91%','77%','98%'] }
+    };
+    function goTo(index) { pages.forEach((page, pageIndex) => { const active = pageIndex === index; page.classList.toggle('active', active); page.setAttribute('aria-hidden', String(!active)); }); }
+    document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => goTo(Number(button.dataset.go))));
+    document.querySelectorAll('[data-signal]').forEach(button => button.addEventListener('click', () => {
+      const data = signalData[button.dataset.signal];
+      document.querySelectorAll('[data-signal]').forEach(signal => signal.setAttribute('aria-pressed', String(signal === button)));
+      document.getElementById('detail-kicker').textContent = data.kicker;
+      document.getElementById('detail-title').innerHTML = data.title;
+      document.getElementById('detail-copy').textContent = data.copy;
+      ['meter-one','meter-two','meter-three'].forEach((id, index) => document.getElementById(id).style.width = data.meters[index]);
+    }));
+  </script>
+</body>
+</html>
